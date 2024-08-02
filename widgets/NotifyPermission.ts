@@ -33,7 +33,7 @@ async function getAndStoreToken(token: string, userData?: Userdata) {
         extraBody = { init: true }
     }
     try {
-        const response = await fetch("http://192.168.232.200:4000/fcm/store", {
+        const response = await fetch("http://backend.abhinav.uno/fcm/store", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

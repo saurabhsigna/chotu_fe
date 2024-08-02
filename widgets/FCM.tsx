@@ -75,10 +75,7 @@ export default function FirebaseFCM() {
 
   useEffect(() => {
     const setupListeners = async () => {
-      const userDataString = localStorage.getItem("userData") as string;
-      const userData = JSON.parse(userDataString);
-
-      await initializeFirebaseNotification(userData);
+      initializeFirebaseNotification();
       console.log("Firebase initialized");
 
       // Set up background message listener

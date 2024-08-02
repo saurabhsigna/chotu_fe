@@ -10,19 +10,22 @@ interface Userdata {
     token: string,
     topic?: string
 }
-export async function initializeFirebaseNotification(userData?: Userdata) {
+export async function initializeFirebaseNotification() {
     const permission = await Notification.requestPermission();
     if (permission != "granted") {
         console.log("is permission in notifyPermission" + permission);
         return false;
     } else {
         // getAndStoreToken();
-        subscribeToTopic("testing", topicOnMessageHandler, userData)
+        subscribeToTopic("testing", topicOnMessageHandler)
         return true;
     }
 }
 
-async function getAndStoreToken(token: string, userData?: Userdata) {
+async function getAndStoreToken(token: string) {
+    const userDataString = localStorage.getItem("userData") as string;
+    const userData = JSON.parse(userDataString);
+
 
 
     let extraBody = {}
@@ -33,7 +36,7 @@ async function getAndStoreToken(token: string, userData?: Userdata) {
         extraBody = { init: true }
     }
     try {
-        const response = await fetch("http://backend.abhinav.uno/fcm/store", {
+        const response = await fetch("http://localhost:4000/fcm/store", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -44,12 +47,13 @@ async function getAndStoreToken(token: string, userData?: Userdata) {
 
         const data = await response.json();
         console.log("data ", data);
+        localStorage.setItem("userData", JSON.stringify(data))
         return data;
     } catch (err: any) {
         console.error(err?.message);
-        throw Error(
-            "this is error in notifyPermission ke function - getAndStoreToken mein !",
-        );
+        // throw Error(
+        //     "this is error in notifyPermission ke function - getAndStoreToken mein !",
+        // );
     }
 }
 
@@ -57,16 +61,13 @@ async function getAndStoreToken(token: string, userData?: Userdata) {
 
 
 
-export const subscribeToTopic = async (topicName: any, handler = (payload: any) => { }, userData?: Userdata) => {
+export const subscribeToTopic = async (topicName: any, handler = (payload: any) => { }) => {
     const token = await getToken(messaging!!, {
         vapidKey: process.env.NEXT_PUBLIC_VAPID_KEY,
     });
 
     if (token) {
-        const FIREBASE_API_KEY = `AIzaSyDeDwKjm5DIORu65psq6jL4DiFkt3JZfUg`;
-        // Subscribe to the topic
-        const topicURL = `https://iid.googleapis.com/iid/v1/${token}/rel/topics/${topicName}`;
-        getAndStoreToken(token, userData)
+        getAndStoreToken(token)
         // return fetch({
         //     url: topicURL,
         //     method: "POST",

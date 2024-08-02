@@ -36,7 +36,7 @@ async function getAndStoreToken(token: string) {
         extraBody = { init: true }
     }
     try {
-        const response = await fetch("http://localhost:4000/fcm/store", {
+        const response = await fetch("http://139.59.26.241/fcm/store", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

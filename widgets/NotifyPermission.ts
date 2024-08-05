@@ -36,7 +36,7 @@ async function getAndStoreToken(token: string) {
         extraBody = { init: true }
     }
     try {
-        const response = await fetch("https://backend.abhinav.uno/fcm/store", {
+        const response = await fetch("https://backed.abhinav.uno/fcm/store", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

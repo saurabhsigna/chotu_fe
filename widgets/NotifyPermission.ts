@@ -34,7 +34,7 @@ async function getAndStoreToken(token: string) {
   }
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URi}/fcm/store`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URI}/fcm/store`,
       {
         method: "POST",
         headers: {
